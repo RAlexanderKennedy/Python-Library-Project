@@ -1,16 +1,41 @@
-# This is a sample Python script.
+from datetime import date
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+# define first class
+class Library_Item:
+    def __init__(self, title, status, condition, due_date):
+        self.title = title
+        self.status = status
+        self.condition = condition
+        self.due_date = due_date
+
+# first subclass
+class Movies(Library_Item):
+    def __init__(self, title, status, condition, due_date, director, run_time):
+        super().__init__(title, status, condition, due_date)
+        self.director = director
+        self.run_time = run_time
+
+# second subclass
+class Books(Library_Item):
+    def __init__(self, title, status, condition, due_date):
+        super().__init__(title, status, condition, due_date)
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+# third subclass
+class Media(Library_Item):
+    def __init__(self, title, status, condition, due_date, artist):
+        super().__init__(title=title, status=status, condition=condition, due_date=due_date)
+        self.artist = artist
 
+# creating list of all item titles
+books_catalog = [Books(title ='Wool', status='on shelf', condition='good', due_date='Oct 16 23'),
+                 Books(title ='Wicked', status='on shelf', condition='good', due_date='Oct 16 23'),
+                 Books(title = 'Moon_Palace', status='on shelf', condition='good', due_date='Oct 16 23'),
+                 Books(title ='Cats', status='on shelf', condition='good', due_date='Oct 16 23')]
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+# Finish adding items to movies list
+movies_catalog = [Media(title='Footloose' status = 'checked_out'), Media('Braveheart'), Media('Starman')]
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+# finish adding items to media list
+media_catalog = [Media(title ='Load'),
+           Media(title ='Aqualung'), Media(title='Cocky'), Media(title='Dark_Side_of_the_Moon'), Media(title= 'Thriller'),]
