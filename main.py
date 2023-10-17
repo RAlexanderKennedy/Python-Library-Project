@@ -190,9 +190,9 @@ def quiet_down():
 
 def main():
     while True:
-        prompt = int(input("Welcome to The Final Four library! What would you like to do? (\n1. View Books \n2. View "
+        prompt = int(input("Welcome to The Final Four library! What would you like to do? \n1. View Books \n2. View "
                            "Movies \n3. View Media \n4. View All \n5. Search by Keyword \n6. Search by "
-                           "Author/Director/Artist\n"))
+                           "Author/Director/Artist\n7. Checkout Item \n8. Return Item \n9. Quit"))
         if prompt == 1:
             view_inventory(1)
 
@@ -213,16 +213,49 @@ def main():
                 user_ask = input("Are you looking for an Author, Director, or Artist? ")
                 if user_ask.lower() == "artist":
                     search_artist()
+                    break
                 elif user_ask.lower() == "director":
                     search_director()
+                    break
                 elif user_ask.lower() == "author":
                     search_author()
+                    break
                 else:
                     print("Improper input. Please choose between: Artist, Director, or Author")
-                    
+        elif prompt == 7:
+            while True:
+                checkout_title = input('Enter the title of the item you would like to check out: ')
+                checkout_item= None
+                for item in inventory:
+                    for i in item:
+                        if i.title.lower() == checkout_title.lower():
+                            checkout_item = i
+
+                if checkout_item != None:
+                    checkout(checkout_item)
+                    break
+                else:
+                    print("Please make sure you entered a valid title")
+        elif prompt == 8:
+            while True:
+                return_title = input('Enter the title of the item you are returning: ')
+                item_to_return= ""
+                for item in inventory:
+                    for i in item:
+                        if i.title.lower() == return_title.lower():
+                            item_to_return = i
+
+                if item_to_return != "":
+                    return_item(item_to_return)
+                    break
+                else:
+                    print("Please make sure you entered a valid title")
+        elif prompt == 9:
+            print("Goodbye!")
+            break
         else:
-            print("Improper input. Please choose from the list (1,2,3,4,5,6)")
-        break
+            print("Improper input. Please choose from the list (1,2,3,4,5,6,7,8,9)")
+
 
 
 if __name__ == "__main__":
