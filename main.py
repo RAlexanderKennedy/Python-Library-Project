@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta
 
 import Library_Item
 
@@ -22,11 +22,11 @@ media_catalog = [Library_Item.Media('Load', 'on shelf', 10, 'null', 'Metallica')
 
 inventory = [books_catalog, movies_catalog, media_catalog]
 
-prompt = int(input("Welcome to the library. Please select a category: \n1. Books \n2. Movies \n3. Media \n4. View All \n"))
+
 # viewing inventory function
 
 def view_inventory(prompt):
-    if prompt not in (1,2,3,4):
+    if prompt not in (1, 2, 3, 4):
         print("Please enter a valid number (1-4)")
     elif prompt == 1:
         for book in books_catalog:
@@ -48,17 +48,19 @@ def view_inventory(prompt):
         # for media in media_catalog:
         #     print(str(media))
 
+
 # searching author funct
 def search_author():
     author = input("Enter the name of the author: ")
-    books_by_author =[]
+    books_by_author = []
     for book in books_catalog:
         if book.author.lower() == author.lower():
-           books_by_author.append(book)
+            books_by_author.append(book)
     for book in books_by_author:
         print(str(book))
     if len(books_by_author) < 1:
         print("No books by that author were found.")
+
 
 # searching title function
 def search_title():
@@ -84,12 +86,37 @@ def search_title():
                 works_by_keyword.append(str(i))
     print(works_by_keyword)
     return works_by_keyword
-#check status function
+
+
+# check status function
 def check_status(item):
     return item.status
+
+
 # adding new inventory function
 def add_inventory():
-    pass
+    while True:
+        add_item = int(input("1. Book, 2. Movie, or 3. Media"))
+        if add_item == 1:
+            new_title = input("Enter the title of the book: ")
+            new_author = input("Enter the Author of the book: ")
+            books_catalog.append(Library_Item.Books(new_title, "on shelf", 10, "null", new_author))
+            break
+        elif add_item == 2:
+            new_title = input("Enter the title of the movie: ")
+            new_director = input("Enter the director of the movie: ")
+            new_runtime = int(input("Enter the runtime of the movie: "))
+            movies_catalog.append(Library_Item.Movies(new_title, "on shelf", 10, "null", new_director, new_runtime))
+            break
+        elif add_item == 3:
+            new_title = input("Enter the title of the media: ")
+            new_artist = input("Enter the artist's name: ")
+            media_catalog.append(Library_Item.Media(new_title, "on shelf", 10, "null", new_artist))
+            break
+        else:
+            print("Enter a valid number 1, 2, or 3: ")
+
+
 # search director function (add into search author)
 def search_director():
     director = input("Enter the name of the director: ")
@@ -114,25 +141,89 @@ def search_artist():
         print(str(media))
     if len(media_by_artist) < 1:
         print("No media by that artist was found.")
+
+
 # check condition of items in catalog/recycle and replace if condition is poor
 def check_condition(returned_item):
-    if returned_item.condition < 1:
-        print("Item was recycled due to poor condition. Consider replacing.")
+    if returned_item.condition <= 1:
+        print(f"{returned_item.title} was recycled due to poor condition. Consider replacing.\n")
         for item in inventory:
             for i in item:
-                if i == returned_item:
-                    item.pop(returned_item)
+                if i.title == returned_item.title:
+                    item.remove(returned_item)
+    else:
+        returned_item.status = "on shelf"
+        returned_item.due_date = "null"
+        print(f"{returned_item.title} returned successfully.")
+
 
 # return item to inventory
-def return_item():
-    pass
+def return_item(item):
+    if item.status.lower() == "out":
+        check_condition(item)
+    else:
+        print("Item is already returned to library.")
+
+
 # final checkout set return date/loop to ask if more than 1 item
-def checkout():
-    pass
+def checkout(item):
+    if item.status.lower() == "on shelf":
+        item.due_date = date.today() + timedelta(days=14)
+        item.status = "out"
+        item.condition -= 1
+        print("Your item was checked out.")
+        print(str(item))
+
+    else:
+        print("This item is already checked out.")
+
+
 # silly shush function
 def quiet_down():
-    pass
-#search_title()
-view_inventory(prompt)
-#search_author()
-#print(check_status(inventory[1][1]))
+    print("Bryce says: Quiet down!")
+
+
+# search_title()
+# view_inventory(prompt)
+# search_author()
+# print(check_status(inventory[1][1]))
+
+def main():
+    while True:
+        prompt = int(input("Welcome to The Final Four library! What would you like to do? (\n1. View Books \n2. View "
+                           "Movies \n3. View Media \n4. View All \n5. Search by Keyword \n6. Search by "
+                           "Author/Director/Artist\n"))
+        if prompt == 1:
+            view_inventory(1)
+
+        elif prompt == 2:
+            view_inventory(2)
+
+        elif prompt == 3:
+            view_inventory(3)
+
+        elif prompt == 4:
+            view_inventory(4)
+
+        elif prompt == 5:
+            search_title()
+
+        elif prompt == 6:
+            while True:
+                user_ask = input("Are you looking for an Author, Director, or Artist? ")
+                if user_ask.lower() == "artist":
+                    search_artist()
+                elif user_ask.lower() == "director":
+                    search_director()
+                elif user_ask.lower() == "author":
+                    search_author()
+                else:
+                    print("Improper input. Please choose between: Artist, Director, or Author")
+                    
+        else:
+            print("Improper input. Please choose from the list (1,2,3,4,5,6)")
+        break
+
+
+if __name__ == "__main__":
+    main()
