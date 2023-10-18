@@ -45,6 +45,9 @@ def view_inventory(prompt):
 
 # searching author funct
 def search_author():
+    """
+    Allows user to search for book by name of author. Needs entire name, first and last
+    """
     author = input("Enter the name of the author: ")
     books_by_author = []
     for book in books_catalog:
