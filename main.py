@@ -145,6 +145,10 @@ def check_condition(returned_item):
 
 # return item to inventory
 def return_item(item):
+    """
+    This function returns items to inventory list
+    :param item: item: name of item
+    """
     if item.status.lower() == "out":
         check_condition(item)
     else:
