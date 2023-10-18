@@ -77,6 +77,8 @@ def check_status(item):
 
 # adding new inventory function
 def add_inventory():
+    """Will prompt the user for the title and creator for a new item, then create that item
+     with default status of 'on shelf' and condition of 10"""
     while True:
         add_item = int(input("1. Book, 2. Movie, or 3. Media\n>>>"))
         if add_item == 1:
