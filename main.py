@@ -153,6 +153,11 @@ def return_item(item):
 
 # final checkout set return date/loop to ask if more than 1 item
 def checkout(item):
+    """
+    this function checks out an item
+    :param item: name of item
+    :return: none, name instead prints
+    """
     if item.status.lower() == "on shelf":
         item.due_date = date.today() + timedelta(days=14)
         item.status = "out"
